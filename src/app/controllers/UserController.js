@@ -5,7 +5,6 @@ import Cache from '../../lib/Cache';
 
 class UserController {
   async store(req, res) {
-
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
     if (userExists) {
@@ -14,15 +13,14 @@ class UserController {
 
     const { id, name, email, provider } = await User.create(req.body);
 
-    if(provider) {
+    if (provider) {
       await Cache.invalidate('providers');
     }
 
     return res.json({ id, name, email, provider });
   }
 
-  async update(req, res) {   
-
+  async update(req, res) {
     const { email, oldPassword } = req.body;
 
     const user = await User.findByPk(req.user_id);

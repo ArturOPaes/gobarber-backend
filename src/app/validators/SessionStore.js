@@ -1,18 +1,18 @@
 import * as Yup from 'yup';
 
 export default async (req, res, next) => {
-    try {
+  try {
+    const schema = Yup.object().shape({
+      email: Yup.string().required(),
+      password: Yup.string().required(),
+    });
 
-        const schema = Yup.object().shape({
-            email: Yup.string().required(),
-            password: Yup.string().required(),
-          });
-      
-          await schema.isValid(req.body, { abortEarly: false });           
+    await schema.isValid(req.body, { abortEarly: false });
 
-          return next();
-        
-    } catch (err) {
-        return res.status(400).json({ error: 'Validation fails', messages: err.inner });    
-    }
-}
+    return next();
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ error: 'Validation fails', messages: err.inner });
+  }
+};
